@@ -1,0 +1,9 @@
+{
+  "buildCommand": "cd backend && npx prisma generate && npx prisma migrate deploy && npm run build && cd ../frontend && npm run build",
+  "outputDirectory": "frontend/dist",
+  "installCommand": "npm install --prefix backend && npm install --prefix frontend",
+  "framework": null,
+  "rewrites": [
+    { "source": "/((?!api/|assets/).*)", "destination": "/index.html" }
+  ]
+}
