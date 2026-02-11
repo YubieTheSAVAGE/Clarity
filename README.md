@@ -100,11 +100,11 @@ frontend/src/reactbits/
 **Database:** Use Supabase PostgreSQL. In Supabase Dashboard → Settings → Database, copy the connection string (use the **Connection pooling** URI for serverless).
 
 **All-in-one Vercel deployment:**
-1. Import repo in Vercel (do **not** set Root Directory – deploy from repo root).
+1. Import repo in Vercel – **Root Directory must be `./`** (repo root).
 2. Add env vars in Vercel:
    - `DATABASE_URL` = Supabase connection string
    - `JWT_SECRET` = strong random secret
-3. Deploy – Vercel builds frontend + backend, runs migrations, and serves both from one project.
+3. Deploy – Vercel detects the Express app at `index.ts`, builds frontend + backend, runs migrations, and serves both from one project.
 
 The API lives at `/api/*` on the same domain as the frontend, so no `VITE_API_URL` is needed.
 
