@@ -56,3 +56,10 @@ Clarity/
 ## API
 
 - `GET /api/health` - Health check
+- `POST /api/auth/register` - Register `{email, password}`
+- `POST /api/auth/login` - Login `{email, password}`
+- `GET /api/transactions` - List transactions (query: type, category, startDate, endDate). Requires `Authorization: Bearer <token>`
+- `POST /api/transactions` - Create transaction
+- `PUT /api/transactions/:id` - Update transaction
+- `DELETE /api/transactions/:id` - Delete transaction
+- `GET /api/dashboard/summary` - Dashboard summary (query: startDate, endDate). Requires auth
