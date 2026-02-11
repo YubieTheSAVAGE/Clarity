@@ -2,6 +2,9 @@ import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import { api } from "../api/client";
+import { Card } from "../ui/Card";
+import { Input } from "../ui/Input";
+import { Button } from "../ui/Button";
 
 export function Login() {
   const [email, setEmail] = useState("");
@@ -34,33 +37,38 @@ export function Login() {
 
   return (
     <div className="auth-page">
-      <h1>Clarity</h1>
-      <p className="subtitle">Sign in to your account</p>
-      <form onSubmit={handleSubmit} className="auth-form">
-        {error && <div className="error-banner">{error}</div>}
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          autoComplete="email"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          autoComplete="current-password"
-        />
-        <button type="submit" disabled={loading}>
-          {loading ? "Signing in..." : "Sign in"}
-        </button>
-      </form>
-      <p className="auth-link">
-        Don&apos;t have an account? <Link to="/register">Sign up</Link>
-      </p>
+      <div className="auth-bg-gradient" />
+      <Card className="auth-card">
+        <h1 className="auth-title">Clarity</h1>
+        <p className="auth-subtitle">Sign in to your account</p>
+        <form onSubmit={handleSubmit} className="auth-form">
+          {error && <div className="auth-error">{error}</div>}
+          <Input
+            type="email"
+            label="Email"
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            autoComplete="email"
+          />
+          <Input
+            type="password"
+            label="Password"
+            placeholder="Enter your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            autoComplete="current-password"
+          />
+          <Button type="submit" variant="primary" disabled={loading} className="auth-submit auth-submit-btn">
+            {loading ? "Signing in..." : "Sign in"}
+          </Button>
+        </form>
+        <p className="auth-switch">
+          Don&apos;t have an account? <Link to="/register">Sign up</Link>
+        </p>
+      </Card>
     </div>
   );
 }

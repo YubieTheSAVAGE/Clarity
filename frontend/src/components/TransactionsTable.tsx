@@ -1,5 +1,9 @@
 import { format } from "date-fns";
 import type { Transaction } from "../api/client";
+import { Badge } from "../ui/Badge";
+import { Button } from "../ui/Button";
+
+const CURRENCY = "MAD";
 
 type TransactionsTableProps = {
   items: Transaction[];
@@ -9,20 +13,33 @@ type TransactionsTableProps = {
 };
 
 export function TransactionsTable({ items, onEdit, onDelete, loading }: TransactionsTableProps) {
-  if (loading) return <div className="loading">Loading transactions...</div>;
-  if (items.length === 0) return <p className="empty-state">No transactions found. Add your first one!</p>;
+  if (loading) {
+    return (
+      <div className="page-loading">
+        <div className="page-loading-spinner" />
+        <p>Loading transactions...</p>
+      </div>
+    );
+  }
+  if (items.length === 0) {
+    return (
+      <div className="transactions-empty">
+        <p>No transactions found. Add your first one!</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="table-wrap">
+    <div className="transactions-table-wrap">
       <table className="transactions-table">
         <thead>
           <tr>
             <th>Date</th>
             <th>Type</th>
             <th>Category</th>
-            <th>Amount</th>
+            <th className="transactions-table-amount">Amount</th>
             <th>Description</th>
-            <th></th>
+            <th className="transactions-table-actions"></th>
           </tr>
         </thead>
         <tbody>
@@ -30,20 +47,20 @@ export function TransactionsTable({ items, onEdit, onDelete, loading }: Transact
             <tr key={t.id}>
               <td>{format(new Date(t.date), "MMM d, yyyy")}</td>
               <td>
-                <span className={`badge ${t.type}`}>{t.type}</span>
+                <Badge variant={t.type}>{t.type}</Badge>
               </td>
               <td>{t.category}</td>
-              <td className={t.type === "income" ? "amount-pos" : "amount-neg"}>
-                {t.type === "income" ? "+" : "-"}${Math.abs(t.amount).toFixed(2)}
+              <td className={`transactions-table-amount ${t.type === "income" ? "amount-income" : "amount-expense"}`}>
+                {t.type === "income" ? "+" : "-"}{CURRENCY} {Math.abs(t.amount).toFixed(2)}
               </td>
-              <td>{t.description || "—"}</td>
-              <td>
-                <button type="button" onClick={() => onEdit(t)} className="btn-sm">
+              <td className="transactions-table-desc">{t.description || "—"}</td>
+              <td className="transactions-table-actions">
+                <Button variant="ghost" size="sm" onClick={() => onEdit(t)}>
                   Edit
-                </button>
-                <button type="button" onClick={() => onDelete(t)} className="btn-sm btn-danger">
+                </Button>
+                <Button variant="destructive" size="sm" onClick={() => onDelete(t)}>
                   Delete
-                </button>
+                </Button>
               </td>
             </tr>
           ))}

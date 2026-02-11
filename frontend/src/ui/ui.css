@@ -1,0 +1,323 @@
+/* Clarity Design System - UI Components */
+
+/* === Variables === */
+:root {
+  --clarity-bg: #f7f8fa;
+  --clarity-bg-card: #ffffff;
+  --clarity-border: #e5e7eb;
+  --clarity-text: #1f2937;
+  --clarity-text-muted: #6b7280;
+  --clarity-primary: #4f46e5;
+  --clarity-primary-hover: #4338ca;
+  --clarity-income: #059669;
+  --clarity-income-bg: #d1fae5;
+  --clarity-expense: #dc2626;
+  --clarity-expense-bg: #fee2e2;
+  --clarity-radius: 12px;
+  --clarity-radius-sm: 8px;
+  --clarity-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --clarity-shadow-md: 0 4px 8px rgba(0, 0, 0, 0.08);
+  --clarity-transition: 180ms ease;
+}
+
+/* === Button === */
+.ui-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  border-radius: var(--clarity-radius-sm);
+  cursor: pointer;
+  transition: all var(--clarity-transition);
+  font-family: inherit;
+  border: none;
+}
+
+.ui-btn:focus-visible {
+  outline: 2px solid var(--clarity-primary);
+  outline-offset: 2px;
+}
+
+.ui-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.ui-btn--sm {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.ui-btn--md {
+  padding: 0.625rem 1.25rem;
+  font-size: 0.9375rem;
+}
+
+.ui-btn--lg {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+}
+
+.ui-btn--primary {
+  background: var(--clarity-primary);
+  color: white;
+}
+
+.ui-btn--primary:hover:not(:disabled) {
+  background: var(--clarity-primary-hover);
+}
+
+.ui-btn--secondary {
+  background: transparent;
+  color: var(--clarity-text);
+  border: 1px solid var(--clarity-border);
+}
+
+.ui-btn--secondary:hover:not(:disabled) {
+  background: #f9fafb;
+}
+
+.ui-btn--destructive {
+  background: var(--clarity-expense);
+  color: white;
+}
+
+.ui-btn--destructive:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+.ui-btn--ghost {
+  background: transparent;
+  color: var(--clarity-text-muted);
+}
+
+.ui-btn--ghost:hover:not(:disabled) {
+  background: #f3f4f6;
+}
+
+/* === Input === */
+.ui-input-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.ui-input-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--clarity-text);
+}
+
+.ui-input {
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--clarity-border);
+  border-radius: var(--clarity-radius-sm);
+  font-size: 0.9375rem;
+  font-family: inherit;
+  background: var(--clarity-bg-card);
+  color: var(--clarity-text);
+  transition: border-color var(--clarity-transition);
+}
+
+.ui-input:focus {
+  outline: none;
+  border-color: var(--clarity-primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+.ui-input::placeholder {
+  color: var(--clarity-text-muted);
+}
+
+.ui-input-error {
+  font-size: 0.8125rem;
+  color: var(--clarity-expense);
+}
+
+/* === Select === */
+.ui-select-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.ui-select-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--clarity-text);
+}
+
+.ui-select {
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--clarity-border);
+  border-radius: var(--clarity-radius-sm);
+  font-size: 0.9375rem;
+  font-family: inherit;
+  background: var(--clarity-bg-card);
+  color: var(--clarity-text);
+  cursor: pointer;
+  transition: border-color var(--clarity-transition);
+}
+
+.ui-select:focus {
+  outline: none;
+  border-color: var(--clarity-primary);
+}
+
+.ui-select-error {
+  font-size: 0.8125rem;
+  color: var(--clarity-expense);
+}
+
+/* === Card === */
+.ui-card {
+  background: var(--clarity-bg-card);
+  border-radius: var(--clarity-radius);
+  box-shadow: var(--clarity-shadow);
+  padding: 1.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+/* === Badge === */
+.ui-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.ui-badge--income {
+  background: var(--clarity-income-bg);
+  color: var(--clarity-income);
+}
+
+.ui-badge--expense {
+  background: var(--clarity-expense-bg);
+  color: var(--clarity-expense);
+}
+
+.ui-badge--neutral {
+  background: #f3f4f6;
+  color: var(--clarity-text-muted);
+}
+
+/* === Modal === */
+.ui-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 1rem;
+  animation: ui-modal-overlay-in 0.18s ease;
+}
+
+@keyframes ui-modal-overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.ui-modal {
+  background: var(--clarity-bg-card);
+  border-radius: var(--clarity-radius);
+  box-shadow: var(--clarity-shadow-md);
+  max-width: 420px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: ui-modal-in 0.2s ease;
+  padding: 1.5rem;
+}
+
+@keyframes ui-modal-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.ui-modal-title {
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--clarity-text);
+}
+
+.ui-modal > form {
+  margin-top: 0;
+}
+
+/* === Confirm Dialog === */
+.ui-confirm-dialog {
+  padding-top: 0;
+}
+
+.ui-confirm-message {
+  margin: 0 0 1.25rem;
+  color: var(--clarity-text-muted);
+  line-height: 1.5;
+}
+
+.ui-confirm-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+/* === Toast === */
+.ui-toast-container {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+.ui-toast {
+  padding: 0.75rem 1rem;
+  border-radius: var(--clarity-radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  box-shadow: var(--clarity-shadow-md);
+  animation: ui-toast-in 0.2s ease;
+}
+
+@keyframes ui-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ui-toast--success {
+  background: var(--clarity-income-bg);
+  color: var(--clarity-income);
+}
+
+.ui-toast--error {
+  background: var(--clarity-expense-bg);
+  color: var(--clarity-expense);
+}
+
+.ui-toast--info {
+  background: var(--clarity-bg-card);
+  color: var(--clarity-text);
+  border: 1px solid var(--clarity-border);
+}

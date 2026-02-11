@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { api } from "../api/client";
 import type { Transaction } from "../api/client";
+import { Modal } from "../ui/Modal";
+import { Input } from "../ui/Input";
+import { Select } from "../ui/Select";
+import { Button } from "../ui/Button";
 
 type FormData = {
   type: "income" | "expense";
@@ -16,6 +20,11 @@ type TransactionFormModalProps = {
   onClose: () => void;
   onSaved: () => void;
 };
+
+const TYPE_OPTIONS = [
+  { value: "income", label: "Income" },
+  { value: "expense", label: "Expense" },
+];
 
 function getDefaultForm(): FormData {
   return {
@@ -47,8 +56,6 @@ export function TransactionFormModal({ open, edit, onClose, onSaved }: Transacti
     setError("");
   }, [edit, open]);
 
-  if (!open) return null;
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
@@ -77,70 +84,57 @@ export function TransactionFormModal({ open, edit, onClose, onSaved }: Transacti
   }
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <h2>{edit ? "Edit Transaction" : "Add Transaction"}</h2>
-        <form onSubmit={handleSubmit}>
-          {error && <div className="error-banner">{error}</div>}
-          <label>
-            Type
-            <select
-              value={form.type}
-              onChange={(e) => setForm((f) => ({ ...f, type: e.target.value as "income" | "expense" }))}
-            >
-              <option value="income">Income</option>
-              <option value="expense">Expense</option>
-            </select>
-          </label>
-          <label>
-            Amount
-            <input
-              type="number"
-              step="0.01"
-              min="0"
-              required
-              value={form.amount}
-              onChange={(e) => setForm((f) => ({ ...f, amount: e.target.value }))}
-            />
-          </label>
-          <label>
-            Category
-            <input
-              type="text"
-              required
-              placeholder="e.g. Food, Salary"
-              value={form.category}
-              onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))}
-            />
-          </label>
-          <label>
-            Date
-            <input
-              type="date"
-              required
-              value={form.date}
-              onChange={(e) => setForm((f) => ({ ...f, date: e.target.value }))}
-            />
-          </label>
-          <label>
-            Description (optional)
-            <input
-              type="text"
-              placeholder="Optional notes"
-              value={form.description}
-              onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
-            />
-          </label>
-          <div className="modal-actions">
-            <button type="button" onClick={onClose}>
-              Cancel
-            </button>
-            <button type="submit" disabled={loading}>
-              {loading ? "Saving..." : edit ? "Update" : "Add"}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+    <Modal open={open} onClose={onClose} title={edit ? "Edit Transaction" : "Add Transaction"}>
+      <form onSubmit={handleSubmit} className="transaction-form">
+        {error && <div className="auth-error">{error}</div>}
+        <Select
+          label="Type"
+          options={TYPE_OPTIONS}
+          value={form.type}
+          onChange={(e) => setForm((f) => ({ ...f, type: e.target.value as "income" | "expense" }))}
+          required
+        />
+        <Input
+          label="Amount"
+          type="number"
+          step="0.01"
+          min="0"
+          required
+          placeholder="0.00"
+          value={form.amount}
+          onChange={(e) => setForm((f) => ({ ...f, amount: e.target.value }))}
+        />
+        <Input
+          label="Category"
+          type="text"
+          required
+          placeholder="e.g. Food, Salary"
+          value={form.category}
+          onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))}
+        />
+        <Input
+          label="Date"
+          type="date"
+          required
+          value={form.date}
+          onChange={(e) => setForm((f) => ({ ...f, date: e.target.value }))}
+        />
+        <Input
+          label="Description (optional)"
+          type="text"
+          placeholder="Optional notes"
+          value={form.description}
+          onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
+        />
+        <div className="transaction-form-actions">
+          <Button type="button" variant="secondary" onClick={onClose} disabled={loading}>
+            Cancel
+          </Button>
+          <Button type="submit" variant="primary" disabled={loading}>
+            {loading ? "Saving..." : edit ? "Update" : "Add"}
+          </Button>
+        </div>
+      </form>
+    </Modal>
   );
 }

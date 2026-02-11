@@ -1,8 +1,17 @@
 import { useSearchParams } from "react-router-dom";
+import { Button } from "../ui/Button";
+import { Select } from "../ui/Select";
+import { Input } from "../ui/Input";
 
 type FiltersBarProps = {
   onAddClick: () => void;
 };
+
+const TYPE_OPTIONS = [
+  { value: "", label: "All types" },
+  { value: "income", label: "Income" },
+  { value: "expense", label: "Expense" },
+];
 
 export function FiltersBar({ onAddClick }: FiltersBarProps) {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -18,35 +27,49 @@ export function FiltersBar({ onAddClick }: FiltersBarProps) {
     setSearchParams(next);
   }
 
+  function clearFilters() {
+    setSearchParams({});
+  }
+
+  const hasFilters = type || category || startDate || endDate;
+
   return (
-    <div className="filters-bar">
-      <select
-        value={type}
-        onChange={(e) => updateFilter("type", e.target.value)}
-      >
-        <option value="">All types</option>
-        <option value="income">Income</option>
-        <option value="expense">Expense</option>
-      </select>
-      <input
-        type="text"
-        placeholder="Category"
-        value={category}
-        onChange={(e) => updateFilter("category", e.target.value)}
-      />
-      <input
-        type="date"
-        value={startDate}
-        onChange={(e) => updateFilter("startDate", e.target.value)}
-      />
-      <input
-        type="date"
-        value={endDate}
-        onChange={(e) => updateFilter("endDate", e.target.value)}
-      />
-      <button type="button" onClick={onAddClick} className="btn-primary">
-        Add Transaction
-      </button>
+    <div className="transactions-toolbar">
+      <div className="transactions-toolbar-filters">
+        <Select
+          options={TYPE_OPTIONS}
+          value={type}
+          onChange={(e) => updateFilter("type", e.target.value)}
+          aria-label="Filter by type"
+        />
+        <Input
+          type="text"
+          placeholder="Search category"
+          value={category}
+          onChange={(e) => updateFilter("category", e.target.value)}
+          aria-label="Filter by category"
+        />
+        <Input
+          type="date"
+          value={startDate}
+          onChange={(e) => updateFilter("startDate", e.target.value)}
+          aria-label="Start date"
+        />
+        <Input
+          type="date"
+          value={endDate}
+          onChange={(e) => updateFilter("endDate", e.target.value)}
+          aria-label="End date"
+        />
+        {hasFilters && (
+          <Button variant="secondary" size="sm" onClick={clearFilters}>
+            Clear
+          </Button>
+        )}
+      </div>
+      <Button variant="primary" onClick={onAddClick}>
+        Add transaction
+      </Button>
     </div>
   );
 }

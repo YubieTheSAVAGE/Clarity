@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { api, type DashboardSummary } from "../api/client";
+import { Card } from "../ui/Card";
+import { Input } from "../ui/Input";
+
+const CURRENCY = "MAD";
 
 export function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -38,61 +42,90 @@ export function Dashboard() {
     setSearchParams(next);
   }
 
-  if (loading) return <div className="loading">Loading dashboard...</div>;
-  if (error) return <div className="error-banner">{error}</div>;
+  if (loading) {
+    return (
+      <div className="page-loading">
+        <div className="page-loading-spinner" />
+        <p>Loading dashboard...</p>
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="page-error">
+        <p>{error}</p>
+      </div>
+    );
+  }
   if (!data) return null;
 
+  const maxExpense = Math.max(...data.expenseByCategory.map((c) => c.total), 1);
+
   return (
-    <div className="dashboard">
+    <div className="dashboard-page">
+      <h2 className="page-title">Dashboard</h2>
+
       <div className="dashboard-filters">
-        <label>
-          From
-          <input
-            type="date"
-            value={startDate}
-            onChange={(e) => handleDateChange("start", e.target.value)}
-          />
-        </label>
-        <label>
-          To
-          <input
-            type="date"
-            value={endDate}
-            onChange={(e) => handleDateChange("end", e.target.value)}
-          />
-        </label>
+        <Input
+          type="date"
+          label="From"
+          value={startDate}
+          onChange={(e) => handleDateChange("start", e.target.value)}
+        />
+        <Input
+          type="date"
+          label="To"
+          value={endDate}
+          onChange={(e) => handleDateChange("end", e.target.value)}
+        />
       </div>
 
-      <div className="summary-cards">
-        <div className="card income">
-          <h3>Total Income</h3>
-          <p className="amount">${data.totalIncome.toFixed(2)}</p>
-        </div>
-        <div className="card expense">
-          <h3>Total Expense</h3>
-          <p className="amount">${data.totalExpense.toFixed(2)}</p>
-        </div>
-        <div className="card net">
-          <h3>Net Balance</h3>
-          <p className={`amount ${data.net >= 0 ? "positive" : "negative"}`}>
-            ${data.net.toFixed(2)}
+      <div className="dashboard-cards">
+        <Card className="dashboard-card dashboard-card--income">
+          <h3 className="dashboard-card-label">Total Income</h3>
+          <p className="dashboard-card-amount dashboard-card-amount--income">
+            {CURRENCY} {data.totalIncome.toFixed(2)}
           </p>
-        </div>
+        </Card>
+        <Card className="dashboard-card dashboard-card--expense">
+          <h3 className="dashboard-card-label">Total Expense</h3>
+          <p className="dashboard-card-amount dashboard-card-amount--expense">
+            {CURRENCY} {data.totalExpense.toFixed(2)}
+          </p>
+        </Card>
+        <Card className="dashboard-card dashboard-card--net">
+          <h3 className="dashboard-card-label">Net Balance</h3>
+          <p className={`dashboard-card-amount ${data.net >= 0 ? "dashboard-card-amount--income" : "dashboard-card-amount--expense"}`}>
+            {CURRENCY} {data.net.toFixed(2)}
+          </p>
+        </Card>
       </div>
 
-      <section className="category-breakdown">
-        <h2>Expenses by Category</h2>
+      <section className="dashboard-breakdown">
+        <h3 className="dashboard-breakdown-title">Expenses by Category</h3>
         {data.expenseByCategory.length === 0 ? (
-          <p className="empty-state">No expenses in this period</p>
+          <Card className="dashboard-breakdown-empty">
+            <p>No expenses in this period</p>
+          </Card>
         ) : (
-          <ul className="category-list">
-            {data.expenseByCategory.map(({ category, total }) => (
-              <li key={category}>
-                <span>{category}</span>
-                <span>${total.toFixed(2)}</span>
-              </li>
-            ))}
-          </ul>
+          <Card className="dashboard-breakdown-list">
+            <ul>
+              {data.expenseByCategory.map(({ category, total }) => (
+                <li key={category} className="dashboard-breakdown-item">
+                  <div className="dashboard-breakdown-header">
+                    <span className="dashboard-breakdown-category">{category}</span>
+                    <span className="dashboard-breakdown-total">{CURRENCY} {total.toFixed(2)}</span>
+                  </div>
+                  <div className="dashboard-breakdown-bar-wrap">
+                    <div
+                      className="dashboard-breakdown-bar"
+                      style={{ width: `${(total / maxExpense) * 100}%` }}
+                    />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </Card>
         )}
       </section>
     </div>
