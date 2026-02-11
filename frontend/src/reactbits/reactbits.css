@@ -1,0 +1,23 @@
+/* React Bits shared styles */
+.rb-empty-state {
+  padding: 3rem;
+  text-align: center;
+  color: #6b7280;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px dashed #e5e7eb;
+}
+
+.rb-empty-state-icon {
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  opacity: 0.6;
+}
+
+.rb-loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #4f46e5;
+  border-radius: 50%;
+}

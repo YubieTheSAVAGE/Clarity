@@ -1,4 +1,5 @@
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useRef } from "react";
+import { motion, AnimatePresence } from "motion/react";
 
 type ModalProps = {
   open: boolean;
@@ -7,6 +8,8 @@ type ModalProps = {
   children: React.ReactNode;
 };
 
+const DURATION = 0.18;
+
 export function Modal({ open, onClose, title, children }: ModalProps) {
   const handleEscape = useCallback(
     (e: KeyboardEvent) => {
@@ -14,6 +17,9 @@ export function Modal({ open, onClose, title, children }: ModalProps) {
     },
     [onClose]
   );
+
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (open) {
@@ -26,26 +32,38 @@ export function Modal({ open, onClose, title, children }: ModalProps) {
     };
   }, [open, handleEscape]);
 
-  if (!open) return null;
-
   return (
-    <div
-      className="ui-modal-overlay"
-      onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="ui-modal-title"
-    >
-      <div
-        className="ui-modal"
-        onClick={(e) => e.stopPropagation()}
-        role="document"
-      >
-        <h2 id="ui-modal-title" className="ui-modal-title">
-          {title}
-        </h2>
-        {children}
-      </div>
-    </div>
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          ref={overlayRef}
+          className="ui-modal-overlay"
+          onClick={onClose}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="ui-modal-title"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: DURATION }}
+        >
+          <motion.div
+            ref={contentRef}
+            className="ui-modal"
+            onClick={(e) => e.stopPropagation()}
+            role="document"
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.96 }}
+            transition={{ duration: DURATION }}
+          >
+            <h2 id="ui-modal-title" className="ui-modal-title">
+              {title}
+            </h2>
+            {children}
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

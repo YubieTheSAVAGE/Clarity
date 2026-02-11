@@ -5,6 +5,7 @@ import { api } from "../api/client";
 import { Card } from "../ui/Card";
 import { Input } from "../ui/Input";
 import { Button } from "../ui/Button";
+import { Aurora, BlurText } from "../reactbits";
 
 export function Register() {
   const [email, setEmail] = useState("");
@@ -36,8 +37,16 @@ export function Register() {
   return (
     <div className="auth-page">
       <div className="auth-bg-gradient" />
+      <Aurora
+        colorStops={["#eef2ff", "#e0e7ff", "#f3f4f6"]}
+        amplitude={0.6}
+        blend={0.5}
+        className="auth-aurora"
+      />
       <Card className="auth-card">
-        <h1 className="auth-title">Clarity</h1>
+        <h1 className="auth-title">
+          <BlurText as="span" text="Clarity" className="auth-title-text" />
+        </h1>
         <p className="auth-subtitle">Create your account</p>
         <form onSubmit={handleSubmit} className="auth-form">
           {error && <div className="auth-error">{error}</div>}

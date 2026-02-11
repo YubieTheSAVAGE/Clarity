@@ -2,6 +2,7 @@ import { format } from "date-fns";
 import type { Transaction } from "../api/client";
 import { Badge } from "../ui/Badge";
 import { Button } from "../ui/Button";
+import { EmptyState, LoadingSpinner } from "../reactbits";
 
 const CURRENCY = "MAD";
 
@@ -16,16 +17,14 @@ export function TransactionsTable({ items, onEdit, onDelete, loading }: Transact
   if (loading) {
     return (
       <div className="page-loading">
-        <div className="page-loading-spinner" />
+        <LoadingSpinner />
         <p>Loading transactions...</p>
       </div>
     );
   }
   if (items.length === 0) {
     return (
-      <div className="transactions-empty">
-        <p>No transactions found. Add your first one!</p>
-      </div>
+      <EmptyState message="No transactions found. Add your first one!" />
     );
   }
 

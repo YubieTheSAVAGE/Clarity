@@ -13,6 +13,8 @@
     "axios": "^1.13.5",
     "date-fns": "^4.1.0",
     "lucide-react": "^0.563.0",
+    "motion": "^12.34.0",
+    "ogl": "^1.0.11",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.13.0"

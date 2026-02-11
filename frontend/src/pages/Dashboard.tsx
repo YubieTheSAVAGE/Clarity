@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { api, type DashboardSummary } from "../api/client";
 import { Card } from "../ui/Card";
 import { Input } from "../ui/Input";
+import { AnimatedCard, EmptyState, LoadingSpinner } from "../reactbits";
 
 const CURRENCY = "MAD";
 
@@ -45,7 +46,7 @@ export function Dashboard() {
   if (loading) {
     return (
       <div className="page-loading">
-        <div className="page-loading-spinner" />
+        <LoadingSpinner />
         <p>Loading dashboard...</p>
       </div>
     );
@@ -81,32 +82,36 @@ export function Dashboard() {
       </div>
 
       <div className="dashboard-cards">
-        <Card className="dashboard-card dashboard-card--income">
-          <h3 className="dashboard-card-label">Total Income</h3>
-          <p className="dashboard-card-amount dashboard-card-amount--income">
-            {CURRENCY} {data.totalIncome.toFixed(2)}
-          </p>
-        </Card>
-        <Card className="dashboard-card dashboard-card--expense">
-          <h3 className="dashboard-card-label">Total Expense</h3>
-          <p className="dashboard-card-amount dashboard-card-amount--expense">
-            {CURRENCY} {data.totalExpense.toFixed(2)}
-          </p>
-        </Card>
-        <Card className="dashboard-card dashboard-card--net">
-          <h3 className="dashboard-card-label">Net Balance</h3>
-          <p className={`dashboard-card-amount ${data.net >= 0 ? "dashboard-card-amount--income" : "dashboard-card-amount--expense"}`}>
-            {CURRENCY} {data.net.toFixed(2)}
-          </p>
-        </Card>
+        <AnimatedCard index={0}>
+          <Card className="dashboard-card dashboard-card--income">
+            <h3 className="dashboard-card-label">Total Income</h3>
+            <p className="dashboard-card-amount dashboard-card-amount--income">
+              {CURRENCY} {data.totalIncome.toFixed(2)}
+            </p>
+          </Card>
+        </AnimatedCard>
+        <AnimatedCard index={1}>
+          <Card className="dashboard-card dashboard-card--expense">
+            <h3 className="dashboard-card-label">Total Expense</h3>
+            <p className="dashboard-card-amount dashboard-card-amount--expense">
+              {CURRENCY} {data.totalExpense.toFixed(2)}
+            </p>
+          </Card>
+        </AnimatedCard>
+        <AnimatedCard index={2}>
+          <Card className="dashboard-card dashboard-card--net">
+            <h3 className="dashboard-card-label">Net Balance</h3>
+            <p className={`dashboard-card-amount ${data.net >= 0 ? "dashboard-card-amount--income" : "dashboard-card-amount--expense"}`}>
+              {CURRENCY} {data.net.toFixed(2)}
+            </p>
+          </Card>
+        </AnimatedCard>
       </div>
 
       <section className="dashboard-breakdown">
         <h3 className="dashboard-breakdown-title">Expenses by Category</h3>
         {data.expenseByCategory.length === 0 ? (
-          <Card className="dashboard-breakdown-empty">
-            <p>No expenses in this period</p>
-          </Card>
+          <EmptyState message="No expenses in this period" />
         ) : (
           <Card className="dashboard-breakdown-list">
             <ul>
